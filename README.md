@@ -9,3 +9,15 @@
 # Services used
 -EC2
 -CloudWatch
+
+# Added Backend infrastructure
+-Created Python script that uses CloudWatch to gather EC2 data.
+-Imported script in Lambda
+-Stored data into DynamoDB table.
+-Set up EventBridge to run the fuction automatically.
+
+# Services used
+-Lambda
+-DynamoDB
+-EventBridge
+-CloudWatch
