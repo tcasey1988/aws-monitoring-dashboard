@@ -1,4 +1,4 @@
-# The goal of this project is to create an AWS monitoring dashboard using Python
+# The goal of this project is to create an AWS monitoring dashboard using Python and AWS services
 
 # This is the initial project setup
 -Created an EC2 instance
@@ -21,3 +21,13 @@
 -DynamoDB
 -EventBridge
 -CloudWatch
+
+# Started setting up the Flask frontend
+-Created Flask app to display dashboard metrics.
+-Set up main page, Metrics page, and health check
+-Created functions to query metrics from the DynamoDB Table
+
+# Services used
+-Flask
+-Python
+-DynamoDB
