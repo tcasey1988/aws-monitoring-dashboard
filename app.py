@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, render_template
 import logging
-
-from services.dynamodb_service import get_metrics
+from services.dynamodb import get_metrics
+from routes.api_routes import api
 
 app = Flask(__name__)
+
+app.register_blueprint(api)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -61,3 +63,7 @@ if __name__ == '__main__':
         port=5000,
         debug=True
     )
+    
+if __name__ == "__main__":
+    app.run(debug=True)
+

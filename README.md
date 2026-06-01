@@ -31,3 +31,13 @@
 -Flask
 -Python
 -DynamoDB
+
+# Set up API Routes
+- Created Flask API architecture
+- Set up resuable AWS service modules.
+- Added logging.
+- Created API endpoints for:
+	- EC2
+	- Lambda
+	- DynamoDB
+	- Dashboard
