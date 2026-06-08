@@ -5,7 +5,7 @@ from config import AWS_REGION
 
 cloudwatch = boto3.client(
     "cloudwatch",
-    region_name=AWS_REGION
+    region_name='us-east-1'
 )
 
 def get_cpu_utilization(instance_id):

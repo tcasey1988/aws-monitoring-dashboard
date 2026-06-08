@@ -33,11 +33,22 @@
 -DynamoDB
 
 # Set up API Routes
-- Created Flask API architecture
-- Set up resuable AWS service modules.
-- Added logging.
-- Created API endpoints for:
+-Created Flask API architecture
+-Set up resuable AWS service modules.
+-Added logging.
+-Created API endpoints for:
 	- EC2
 	- Lambda
 	- DynamoDB
 	- Dashboard
+
+# Set up charts to display metrics
+-Used JavaScript to set up charts
+-Set up chart to display EC2 instances and CPU usage
+-Set up chart to display DynamoDB tables and ite count
+-Added chart to show the number of Lambda functions
+-Set up auto-refresh to provide real time monitoring of metrics
+
+# Services used
+-JavaScript
+-HTML

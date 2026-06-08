@@ -1,11 +1,12 @@
 from flask import Blueprint, jsonify
 from datetime import datetime
-from services.ec2_service import get_ec2_instances
+from services.ec2_service import get_ec2_instances, get_ec2_cpu_metrics
 from services.lambda_service import get_lambda_functions
 from services.dynamodb_service import get_tables
 from utils.logger import logger
 
 api = Blueprint("api", __name__)
+
 
 @api.route("/api/lambda")
 def lambda_data():
@@ -101,6 +102,27 @@ def dashboard_data():
                 "lambda": lambda_functions,
                 "dynamodb": dynamodb_tables
             }
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+    
+@api.route("/api/ec2/cpu")
+def ec2_cpu_data():
+
+    logger.info("Fetching EC2 CPU metrics")
+
+    try:
+
+        metrics = get_ec2_cpu_metrics()
+
+        return jsonify({
+            "status": "success",
+            "data": metrics
         })
 
     except Exception as e:

@@ -19,7 +19,7 @@ def dashboard():
 
     logger.info("Dashboard page accessed")
 
-    return render_template('index.html')
+    return render_template('dashboard.html')
 
 @app.route('/health')
 def health_check():

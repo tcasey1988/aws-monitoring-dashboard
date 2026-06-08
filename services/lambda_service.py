@@ -3,7 +3,7 @@ from config import AWS_REGION
 
 lambda_client = boto3.client(
     "lambda",
-    region_name=AWS_REGION
+    region_name='us-east-1'
 )
 
 def get_lambda_functions():

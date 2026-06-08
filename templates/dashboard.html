@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1>AWS Monitoring Dashboard</h1>
+
+<div class="card">
+    <h2>CPU Utilization</h2>
+    <p id="cpu-value">Loading...</p>
+</div>
+
+<div style="width:800px;height:400px;">
+    <canvas id="cpuChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>Lambda Functions</h2>
+    <p id="lambda-count">Loading...</p>
+</div>
+
+<div style="width:800px;height:400px;">
+    <canvas id="lambdaChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>DynamoDB Tables</h2>
+    <p id="dynamodb-count">Loading...</p>
+</div>
+
+<div style="width:800px;height:400px;">
+    <canvas id="dynamodbChart"></canvas>
+</div>
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+</html>
