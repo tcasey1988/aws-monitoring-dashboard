@@ -80,9 +80,100 @@ def get_ec2_cpu_metrics():
 
             metrics.append({
                 "instance_id": instance_id,
-                "cpu_utilization": cpu_value
+                "cpu_utilization": cpu_value,
+                "state": instance["State"]["Name"]
             })
     
 
     return metrics
 
+def get_instance_status():
+
+    response = ec2_client.describe_instances()
+
+    instances = []
+
+    for reservation in response["Reservations"]:
+
+        for instance in reservation["Instances"]:
+
+            instance_name = "Unknown"
+
+            for tag in instance.get("Tags", []):
+
+                if tag["Key"] == "Name":
+
+                    instance_name = tag["Value"]
+
+            instances.append({
+
+                "instance_id": instance["InstanceId"],
+
+                "instance_name": instance_name,
+
+                "state": instance["State"]["Name"],
+
+                "public_ip": instance.get(
+                    "PublicIpAddress",
+                    "N/A"
+                ),
+
+                "availability_zone":
+                    instance["Placement"]["AvailabilityZone"]
+
+            })
+
+    return instances
+
+def get_cloudwatch_alarms():
+
+	response = cloudwatch_client.describe_alarms()
+	
+	alarms = []
+
+	for alarm in response["MetricAlarms"]:
+		alarms.append({
+			"name": alarm["AlarmName"],
+			"state": alarm["StateValue"],
+			"reason": alarm["StateReason"]
+		})
+
+	return alarms
+
+def determine_health(cpu, state):
+
+    if state == "stopped":
+        return "Offline"
+
+    if cpu < 70:
+        return "Healthy"
+
+    elif cpu < 90:
+        return "Warning"
+
+    return "Critical"
+		
+
+def get_system_health():
+
+    cpu_metrics = get_ec2_cpu_metrics()
+
+    health_data = []
+
+    for metric in cpu_metrics:
+
+        cpu = metric["cpu_utilization"]
+
+        state = metric["state"]
+
+        health_data.append({
+
+            "instance_id": metric["instance_id"],
+
+            "cpu_utilization": cpu,
+
+            "cpu_health": determine_health(cpu, state)
+
+        })
+
+    return health_data

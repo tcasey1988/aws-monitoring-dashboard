@@ -4,6 +4,144 @@ let cpuChart;
 let lambdaChart;
 let dynamodbChart;
 
+async function loadStatusData() {
+
+    try {
+
+        const response =
+            await fetch('/api/status');
+
+        const result =
+            await response.json();
+
+        let html = '';
+
+        result.data.forEach(instance => {
+
+            html += `
+                <p>
+                    <strong>${instance.instance_name}</strong><br>
+                    State: ${instance.state}<br>
+                    AZ: ${instance.availability_zone}
+                </p>
+                <hr>
+            `;
+
+        });
+
+        document.getElementById(
+            'system-status'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            'system-status'
+        ).innerHTML =
+            'Unable to load status';
+
+    }
+}
+
+async function loadAlarmData() {
+
+    try {
+
+        const response =
+            await fetch('/api/alarms');
+
+        const result =
+            await response.json();
+
+        let html = '';
+
+        if (result.data.length === 0) {
+
+            html =
+                '<p>No Active Alarms</p>';
+
+        }
+
+        else {
+
+            result.data.forEach(alarm => {
+
+                html += `
+                    <p>
+                        ${alarm.name}<br>
+                        ${alarm.state}
+                    </p>
+                `;
+
+            });
+
+        }
+
+        document.getElementById(
+            'active-alarms'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            'active-alarms'
+        ).innerHTML =
+            'Unable to load alarms';
+
+    }
+}
+
+async function loadSystemHealth() {
+
+    try {
+
+        const response =
+            await fetch('/api/system-health');
+
+        const result =
+            await response.json();
+
+        let html = '';
+
+        result.data.forEach(instance => {
+
+            html += `
+                <p>
+                    ${instance.instance_id}<br>
+                    Health:
+                    ${instance.cpu_health}
+                </p>
+                <hr>
+            `;
+
+        });
+
+        document.getElementById(
+            'system-health'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            'system-health'
+        ).innerHTML =
+            'Unable to load health';
+
+    }
+}
+
 async function loadCPUData() {
 
     try {
@@ -274,16 +412,24 @@ async function refreshDashboard() {
 
     console.log("Refreshing dashboard...");
 
+    await loadStatusData();
+
+    await loadAlarmData();
+
+    await loadSystemHealth();
+
     await loadCPUData();
 
     await loadLambdaData();
 
     await loadDynamoDBData();
-
 }
 
-loadCPUData();
-loadLambdaData();
-loadDynamoDBData();
+
 refreshDashboard();
-setInterval(refreshDashboard, 60000);
+
+setInterval(
+    refreshDashboard,
+    60000
+);
+

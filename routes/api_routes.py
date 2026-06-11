@@ -1,12 +1,11 @@
 from flask import Blueprint, jsonify
 from datetime import datetime
-from services.ec2_service import get_ec2_instances, get_ec2_cpu_metrics
+from services.ec2_service import get_ec2_instances, get_ec2_cpu_metrics, get_instance_status, get_cloudwatch_alarms, get_system_health
 from services.lambda_service import get_lambda_functions
 from services.dynamodb_service import get_tables
 from utils.logger import logger
 
 api = Blueprint("api", __name__)
-
 
 @api.route("/api/lambda")
 def lambda_data():
@@ -123,6 +122,69 @@ def ec2_cpu_data():
         return jsonify({
             "status": "success",
             "data": metrics
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+    
+@api.route('/api/status')
+def api_status():
+
+    logger.info("Fetching EC2 status")
+
+    try:
+
+        status = get_instance_status()
+
+        return jsonify({
+            "status": "success",
+            "data": status
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+    
+@api.route('/api/alarms')
+def alarms_data():
+
+    logger.info("Fetching CloudWatch alarms")
+
+    try:
+
+        alarms = get_cloudwatch_alarms()
+
+        return jsonify({
+            "status": "success",
+            "data": alarms
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+
+@api.route('/api/system-health')
+def system_health():
+
+    logger.info("Fetching system health")
+
+    try:
+
+        health = get_system_health()
+
+        return jsonify({
+            "status": "success",
+            "data": health
         })
 
     except Exception as e:
