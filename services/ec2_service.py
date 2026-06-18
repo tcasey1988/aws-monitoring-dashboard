@@ -127,18 +127,28 @@ def get_instance_status():
 
 def get_cloudwatch_alarms():
 
-	response = cloudwatch_client.describe_alarms()
-	
-	alarms = []
+    response = cloudwatch_client.describe_alarms()
 
-	for alarm in response["MetricAlarms"]:
-		alarms.append({
-			"name": alarm["AlarmName"],
-			"state": alarm["StateValue"],
-			"reason": alarm["StateReason"]
-		})
+    alarm_data = []
 
-	return alarms
+    for alarm in response["MetricAlarms"]:
+
+        alarm_data.append({
+
+            "alarm_name": alarm["AlarmName"],
+
+            "state": alarm["StateValue"],
+
+            "reason": alarm["StateReason"],
+
+            "metric": alarm["MetricName"],
+
+            "updated": str(
+                alarm["StateUpdatedTimestamp"]
+            )
+        })
+
+    return alarm_data
 
 def determine_health(cpu, state):
 

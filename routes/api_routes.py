@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from datetime import datetime
 from services.ec2_service import get_ec2_instances, get_ec2_cpu_metrics, get_instance_status, get_cloudwatch_alarms, get_system_health
 from services.lambda_service import get_lambda_functions
-from services.dynamodb_service import get_tables
+from services.dynamodb_service import get_tables, get_remediation_history
 from utils.logger import logger
 
 api = Blueprint("api", __name__)
@@ -185,6 +185,25 @@ def system_health():
         return jsonify({
             "status": "success",
             "data": health
+        })
+
+    except Exception as e:
+
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 500
+    
+@api.route("/api/remediation-history")
+def remediation_history():
+
+    try:
+
+        history = get_remediation_history()
+
+        return jsonify({
+            "status": "success",
+            "data": history
         })
 
     except Exception as e:

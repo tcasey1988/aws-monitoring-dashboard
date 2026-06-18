@@ -26,3 +26,32 @@ def get_tables():
         })
 
     return table_data
+
+def get_remediation_history():
+
+    resource = boto3.resource(
+        "dynamodb",
+        region_name=AWS_REGION
+    )
+
+    table = resource.Table(
+        "AutoRemediationHistory"
+    )
+
+    response = table.scan()
+
+    items = response.get(
+        "Items",
+        []
+    )
+
+    items = sorted(
+        items,
+        key=lambda x: x.get(
+            "timestamp",
+            ""
+        ),
+        reverse=True
+    )
+
+    return items[:20]

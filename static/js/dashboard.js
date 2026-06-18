@@ -408,21 +408,230 @@ async function loadDynamoDBData() {
     }
 }
 
+async function loadAlarms() {
+
+    try {
+
+        const response =
+            await fetch('/api/alarms');
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Alarm Data:",
+            result
+        );
+
+        let html = '';
+
+        if (
+            result.data.length === 0
+        ) {
+
+            html =
+                '<p>No active alarms</p>';
+
+        }
+
+        else {
+
+            result.data.forEach(
+                alarm => {
+
+                    html += `
+                    <div>
+                        <strong>
+                            ${alarm.alarm_name}
+                        </strong><br>
+
+                        State:
+                        ${alarm.state}<br>
+
+                        Metric:
+                        ${alarm.metric}<br>
+
+                        Updated:
+                        ${alarm.updated}
+                    </div>
+                    <hr>
+                    `;
+                }
+            );
+        }
+
+        document.getElementById(
+            'alarms-container'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(
+            'Alarm widget error:',
+            error
+        );
+
+        document.getElementById(
+            'alarms-container'
+        ).innerHTML =
+            '<p>Error loading alarms</p>';
+    }
+}
+
+async function loadSystemHealth() {
+
+    try {
+
+        const response =
+            await fetch(
+                '/api/system-health'
+            );
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Health Data:",
+            result
+        );
+
+        let html = '';
+
+        result.data.forEach(
+            item => {
+
+                html += `
+                <div>
+                    <strong>
+                        ${item.instance_id}
+                    </strong><br>
+
+                    CPU:
+                    ${item.cpu_utilization}%<br>
+
+                    Health:
+                    ${item.cpu_health}
+                </div>
+                <hr>
+                `;
+            }
+        );
+
+        document.getElementById(
+            'health-container'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(
+            'Health widget error:',
+            error
+        );
+
+        document.getElementById(
+            'health-container'
+        ).innerHTML =
+            '<p>Error loading health data</p>';
+    }
+}
+
+async function loadRemediationHistory() {
+
+    try {
+
+        const response =
+            await fetch(
+                '/api/remediation-history'
+            );
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Remediation History:",
+            result
+        );
+
+        let html = '';
+
+        if (
+            result.data.length === 0
+        ) {
+
+            html =
+                '<p>No remediation events found</p>';
+
+        }
+
+        else {
+
+            result.data.forEach(
+                event => {
+
+                    html += `
+                    <div>
+                        <strong>
+                            ${event.timestamp}
+                        </strong><br>
+
+                        Action:
+                        ${event.action}<br>
+
+                        Status:
+                        ${event.status}<br>
+
+                        Instance:
+                        ${event.instance_id}
+                    </div>
+                    <hr>
+                    `;
+                }
+            );
+        }
+
+        document.getElementById(
+            'remediation-container'
+        ).innerHTML = html;
+
+    }
+
+    catch(error) {
+
+        console.error(
+            'Remediation widget error:',
+            error
+        );
+
+        document.getElementById(
+            'remediation-container'
+        ).innerHTML =
+            '<p>Error loading remediation history</p>';
+    }
+}
+
+
+
 async function refreshDashboard() {
 
-    console.log("Refreshing dashboard...");
-
-    await loadStatusData();
-
-    await loadAlarmData();
-
-    await loadSystemHealth();
+    console.log(
+        "Refreshing dashboard..."
+    );
 
     await loadCPUData();
 
     await loadLambdaData();
 
     await loadDynamoDBData();
+
+    await loadAlarms();
+
+    await loadSystemHealth();
+
+    await loadRemediationHistory();
 }
 
 
@@ -432,4 +641,6 @@ setInterval(
     refreshDashboard,
     60000
 );
+
+
 

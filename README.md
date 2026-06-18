@@ -52,3 +52,27 @@
 # Services used
 -JavaScript
 -HTML
+
+# Added dashboard enhancements to improve monitoring
+-Added widgets to display device health status
+-Added device status to display if EC2 is on or stopped
+
+# Services used
+-JavaScript
+-HTML/CSS
+
+# Added Auto-Remediation 
+-Set up auto-remediation using CloudWatch and EventBridge.
+-Added EC2 to Systems Manager.
+-Created Lambda function to automatically remediate alert.
+-Saved remediation history to DynamoDB.
+-Used SNS to sent notification to emal.
+-Added widgets to dashboard to display statistics and alert history.
+
+# Services used
+-CloudWatch
+-EventBridge
+-Lambda
+-DynamoDB
+-SNS
+-JavaScript, HTML
