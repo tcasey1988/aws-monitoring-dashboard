@@ -7,7 +7,7 @@ solution built using EC2, CloudWatch, Lambda, DynamoDB,
 EventBridge, SNS, and Flask.
 
 This Dashboard collects infrastructure metrics, stores them to DynamoDB,
-displays metrics in a web Dashboard, and performs auto-remediatino when CloudWatch alarms are triggered.
+displays metrics in a web Dashboard, and performs auto-remediation when CloudWatch alarms are triggered.
 
 # Architecture
 <img width="321" height="761" alt="dashboard_diagram drawio" src="https://github.com/user-attachments/assets/1f97d710-9baa-4f20-90aa-92e7a7d21096" />
