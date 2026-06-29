@@ -3,11 +3,13 @@ from datetime import datetime, timedelta
 
 from config import AWS_REGION
 
+# create a CloudWatch client
 cloudwatch = boto3.client(
     "cloudwatch",
-    region_name='us-east-1'
+    region_name=AWS_REGION
 )
 
+# returns CPU utilization metrics for a given EC2 instance
 def get_cpu_utilization(instance_id):
 
     end_time = datetime.utcnow()

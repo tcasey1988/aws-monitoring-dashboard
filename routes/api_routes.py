@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify
 from datetime import datetime
+
+# import AWS services
 from services.ec2_service import get_ec2_instances, get_ec2_cpu_metrics, get_instance_status, get_cloudwatch_alarms, get_system_health
 from services.lambda_service import get_lambda_functions
 from services.dynamodb_service import get_tables, get_remediation_history
@@ -7,6 +9,7 @@ from utils.logger import logger
 
 api = Blueprint("api", __name__)
 
+# returns Lambda information
 @api.route("/api/lambda")
 def lambda_data():
 
@@ -28,6 +31,7 @@ def lambda_data():
             "message": str(e)
         }), 500
 
+# return endpoint Health
 @api.route("/api/health")
 def health_check():
 
@@ -39,6 +43,7 @@ def health_check():
         "message": "API is healthy"
     })
 	
+# return EC2 information
 @api.route("/api/ec2")
 def ec2_data():
 
@@ -60,6 +65,7 @@ def ec2_data():
             "message": str(e)
         }), 500
 		
+# returns DynamoDB table information
 @api.route("/api/dynamodb")
 def dynamodb_data():
 
@@ -80,7 +86,8 @@ def dynamodb_data():
             "status": "error",
             "message": str(e)
         }), 500
-		
+
+# returns the Dashboard		
 @api.route("/api/dashboard")
 def dashboard_data():
 
@@ -110,6 +117,7 @@ def dashboard_data():
             "message": str(e)
         }), 500
     
+# return EC2 cpu information
 @api.route("/api/ec2/cpu")
 def ec2_cpu_data():
 
@@ -131,6 +139,7 @@ def ec2_cpu_data():
             "message": str(e)
         }), 500
     
+# returns EC2 status information
 @api.route('/api/status')
 def api_status():
 
@@ -152,6 +161,7 @@ def api_status():
             "message": str(e)
         }), 500
     
+# returns CloudWatch alarms
 @api.route('/api/alarms')
 def alarms_data():
 
@@ -173,6 +183,7 @@ def alarms_data():
             "message": str(e)
         }), 500
 
+# returns system health
 @api.route('/api/system-health')
 def system_health():
 
@@ -194,6 +205,7 @@ def system_health():
             "message": str(e)
         }), 500
     
+# returns the remediation history
 @api.route("/api/remediation-history")
 def remediation_history():
 

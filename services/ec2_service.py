@@ -2,16 +2,19 @@ import boto3
 from datetime import datetime, timedelta
 from config import AWS_REGION
 
+# create EC2
 ec2_client = boto3.client(
     "ec2",
     region_name='us-east-1'
 )
 
+# create CloudWatch
 cloudwatch_client = boto3.client(
     "cloudwatch",
-    region_name='us-east-1'
+    region_name=AWS_REGION
 )
 
+# get information for EC2 instances
 def get_ec2_instances():
 
     response = ec2_client.describe_instances()
@@ -29,6 +32,7 @@ def get_ec2_instances():
     return instances
 
 
+# get the EC2 cpu metrics
 def get_ec2_cpu_metrics():
 
     response = ec2_client.describe_instances()
@@ -87,12 +91,14 @@ def get_ec2_cpu_metrics():
 
     return metrics
 
+# get the status of EC2 instance
 def get_instance_status():
 
     response = ec2_client.describe_instances()
 
     instances = []
 
+    # loop through the instances and get their status
     for reservation in response["Reservations"]:
 
         for instance in reservation["Instances"]:
@@ -125,6 +131,7 @@ def get_instance_status():
 
     return instances
 
+# get the cloudwatch alarms
 def get_cloudwatch_alarms():
 
     response = cloudwatch_client.describe_alarms()
@@ -150,6 +157,7 @@ def get_cloudwatch_alarms():
 
     return alarm_data
 
+# get the device health based on CPU utilization and instance state
 def determine_health(cpu, state):
 
     if state == "stopped":
@@ -163,7 +171,7 @@ def determine_health(cpu, state):
 
     return "Critical"
 		
-
+# get the system health based on CPU utilization and instance state
 def get_system_health():
 
     cpu_metrics = get_ec2_cpu_metrics()

@@ -12,8 +12,10 @@ logging.basicConfig(
     format='%(asctime)s %(levelname)s %(name)s %(message)s'
 )
 
+# set up logging
 logger = logging.getLogger(__name__)
 
+# create main route and Dashboard page
 @app.route('/')
 def dashboard():
 
@@ -21,6 +23,7 @@ def dashboard():
 
     return render_template('dashboard.html')
 
+# route for health checks
 @app.route('/health')
 def health_check():
 
@@ -30,6 +33,7 @@ def health_check():
         "status": "healthy"
     })
 
+# route for Metrics endpoint
 @app.route('/api/metrics')
 def api_metrics():
 
@@ -63,7 +67,3 @@ if __name__ == '__main__':
         port=5000,
         debug=True
     )
-    
-if __name__ == "__main__":
-    app.run(debug=True)
-

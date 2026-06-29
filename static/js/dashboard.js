@@ -1,5 +1,6 @@
 console.log("dashboard.js loaded");
 
+
 let cpuChart;
 let lambdaChart;
 let dynamodbChart;
