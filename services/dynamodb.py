@@ -5,9 +5,11 @@ from decimal import Decimal
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# create a DynamoDB resource and specify the table name
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('MonitoringMetrics')
 
+# returns DynamoDB table information
 def convert_decimals(obj):
 
     if isinstance(obj, list):
@@ -21,6 +23,7 @@ def convert_decimals(obj):
 
     return obj
 	
+# returns DynamoDB table information
 def get_metrics():
 
     try:

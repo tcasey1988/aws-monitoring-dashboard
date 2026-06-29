@@ -3,21 +3,24 @@ import uuid
 import os
 from datetime import datetime
 
+# Set up AWS clients
 ssm = boto3.client("ssm")
 dynamodb = boto3.resource("dynamodb")
 sns = boto3.client("sns")
 
+# Get environment variables
 INSTANCE_ID = os.environ.get("INSTANCE_ID")
 TABLE_NAME = os.environ.get("TABLE_NAME")
 SNS_TOPIC_ARN = os.environ.get("SNS_TOPIC_ARN")
 
-
+# Lambda function handler
 def lambda_handler(event, context):
 
     table = dynamodb.Table(TABLE_NAME)
 
     try:
 
+        # Execute the SSM command to restart nginx
         event_id = str(uuid.uuid4())
         timestamp = datetime.utcnow().isoformat()
 
